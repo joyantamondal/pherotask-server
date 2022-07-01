@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const cors = require('cors');
@@ -8,7 +9,7 @@ const port = 5000;
 app.use(cors());
 app.use(express.json());
 
-const uri = "mongodb://pherotask:MHgzkkg3BXbUffjV@cluster0-shard-00-00.bdgqc.mongodb.net:27017,cluster0-shard-00-01.bdgqc.mongodb.net:27017,cluster0-shard-00-02.bdgqc.mongodb.net:27017/?ssl=true&replicaSet=atlas-1ib0bq-shard-0&authSource=admin&retryWrites=true&w=majority";
+const uri = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0-shard-00-00.bdgqc.mongodb.net:27017,cluster0-shard-00-01.bdgqc.mongodb.net:27017,cluster0-shard-00-02.bdgqc.mongodb.net:27017/?ssl=true&replicaSet=atlas-1ib0bq-shard-0&authSource=admin&retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 async function run() {
@@ -39,7 +40,9 @@ async function run() {
       });
       res.send(result);
   })
-  
+  app.get("/",(req,res)=>{
+  res.send('Hello P Hero');
+  })
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
